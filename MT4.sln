@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36518.9 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MT4", "MT4.vcxproj", "{71AB9B33-BA00-4B18-B3E7-DDD228AA1253}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Develop|x64 = Develop|x64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{71AB9B33-BA00-4B18-B3E7-DDD228AA1253}.Debug|x64.ActiveCfg = Debug|x64
+		{71AB9B33-BA00-4B18-B3E7-DDD228AA1253}.Debug|x64.Build.0 = Debug|x64
+		{71AB9B33-BA00-4B18-B3E7-DDD228AA1253}.Develop|x64.ActiveCfg = Develop|x64
+		{71AB9B33-BA00-4B18-B3E7-DDD228AA1253}.Develop|x64.Build.0 = Develop|x64
+		{71AB9B33-BA00-4B18-B3E7-DDD228AA1253}.Release|x64.ActiveCfg = Release|x64
+		{71AB9B33-BA00-4B18-B3E7-DDD228AA1253}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {469C677D-0810-4A3C-8672-B09F5D0F1DE0}
+	EndGlobalSection
+EndGlobal
