@@ -120,6 +120,7 @@ Matrix4x4 MakeRotateXMatrix(float radian) {
 	return result;
 }
 
+
 Matrix4x4 MakeRotateYMatrix(float radian) {
 	Matrix4x4 result{};
 	result.m[0][0] = std::cosf(radian);
