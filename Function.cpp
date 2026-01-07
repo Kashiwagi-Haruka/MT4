@@ -314,7 +314,99 @@ Matrix4x4 MakeIdentity4x4() {
 float Dot(const Vector3& v1, const Vector3& v2) { return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;}
 
 Vector3 Distance(const Vector3& pos1, const Vector3& pos2) { return {pos2.x - pos1.x, pos2.y - pos1.y, pos2.z - pos1.z}; }
+Matrix4x4 DirectionToDirection(Vector3 from, Vector3 to) {
+	// --- 正規化 ---
+	Vector3 u = Normalize(from);
+	Vector3 v = Normalize(to);
 
+	float cosTheta = Dot(u, v);
+
+	// ==============================
+	// 同方向（回転なし）
+	// ==============================
+	if (cosTheta > 0.9999f) {
+		return MakeIdentity4x4();
+	}
+
+	// ==============================
+	// 逆方向（180度回転）
+	// ==============================
+	if (cosTheta < -0.9999f) {
+		Vector3 n;
+
+		// u に垂直な軸を「成分から決める」
+		if (fabs(u.x) > 1e-6f || fabs(u.y) > 1e-6f) {
+			// ( uy, -ux, 0 )
+			n = Vector3{u.y, -u.x, 0.0f};
+		} else {
+			// ( uz, 0, -ux )
+			n = Vector3{u.z, 0.0f, -u.x};
+		}
+
+		n = Normalize(n);
+
+		float x = n.x;
+		float y = n.y;
+		float z = n.z;
+
+		// 180度回転行列（Row-major用 → 最後にTranspose）
+		Matrix4x4 R = MakeIdentity4x4();
+
+		R.m[0][0] = 2 * x * x - 1;
+		R.m[0][1] = 2 * x * y;
+		R.m[0][2] = 2 * x * z;
+
+		R.m[1][0] = 2 * y * x;
+		R.m[1][1] = 2 * y * y - 1;
+		R.m[1][2] = 2 * y * z;
+
+		R.m[2][0] = 2 * z * x;
+		R.m[2][1] = 2 * z * y;
+		R.m[2][2] = 2 * z * z - 1;
+
+		return Transpose(R);
+	}
+
+	// ==============================
+	// 通常ケース（Rodrigues）
+	// ==============================
+	Vector3 crossUV = Cross(u, v);
+	Vector3 n = Normalize(crossUV);
+
+	float sinTheta = Length(crossUV);
+
+	float x = n.x;
+	float y = n.y;
+	float z = n.z;
+
+	float c = cosTheta;
+	float s = sinTheta;
+	float t = 1.0f - c;
+
+	Matrix4x4 R;
+
+	R.m[0][0] = x * x * t + c;
+	R.m[0][1] = x * y * t + z * s;
+	R.m[0][2] = x * z * t - y * s;
+	R.m[0][3] = 0.0f;
+
+	R.m[1][0] = y * x * t - z * s;
+	R.m[1][1] = y * y * t + c;
+	R.m[1][2] = y * z * t + x * s;
+	R.m[1][3] = 0.0f;
+
+	R.m[2][0] = z * x * t + y * s;
+	R.m[2][1] = z * y * t - x * s;
+	R.m[2][2] = z * z * t + c;
+	R.m[2][3] = 0.0f;
+
+	R.m[3][0] = 0.0f;
+	R.m[3][1] = 0.0f;
+	R.m[3][2] = 0.0f;
+	R.m[3][3] = 1.0f;
+
+	return Transpose(R);
+}
 } // namespace Function
 Vector3 operator+ (const Vector3& v1, const Vector3& v2) { return {v1.x + v2.x, v1.y + v2.y, v1.z + v2.z}; }
 Vector3 operator-(const Vector3& v1, const Vector3& v2) {return {v1.x - v2.x, v1.y - v2.y, v1.z - v2.z};}

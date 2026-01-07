@@ -1,5 +1,6 @@
 #include <Novice.h>
 #include "MT40101.h"
+#include "MT40102.h"
 const char kWindowTitle[] = "LE2A_04_カシワギハルカ";
 
 // Windowsアプリでのエントリーポイント(main関数)
@@ -12,7 +13,9 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int) {
 	char keys[256] = {0};
 	char preKeys[256] = {0};
 
-	MT40101 mt40101;
+	/*MT40101 mt40101;*/
+	MT40102 mt40102;
+
 	// ウィンドウの×ボタンが押されるまでループ
 	while (Novice::ProcessMessage() == 0) {
 		// フレームの開始
@@ -25,11 +28,18 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int) {
 		///
 		/// ↓更新処理ここから
 		///
-		mt40101.Update();
+		
+		/*mt40101.Update();*/
+		mt40102.Update();
+
+
 		///
 		/// ↑更新処理ここまで
 		///
-		mt40101.Draw();
+		
+		/*mt40101.Draw();*/
+		mt40102.Draw();
+
 		///
 		/// ↓描画処理ここから
 		///
