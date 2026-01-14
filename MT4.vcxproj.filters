@@ -14,21 +14,43 @@
     <Filter Include="KamataEngine\Adapter">
       <UniqueIdentifier>{c6468eb4-788b-4a83-b207-a5f4804e56c5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MT4_01-03">
+      <UniqueIdentifier>{445ee784-9c4a-4d26-9b0c-cc79f4ef07bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MT4_01-02">
+      <UniqueIdentifier>{4c5f6f30-27df-4e27-97ae-f4a12ea0fded}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MT4_01-01">
+      <UniqueIdentifier>{f20d7981-3217-4e4a-8c88-98ebbf5e9bed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Function">
+      <UniqueIdentifier>{7610a1ad-d9da-46f2-b762-b6158fd68735}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MT4_01-04">
+      <UniqueIdentifier>{687ce4c3-36e8-4e90-8089-5212c7faa465}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="C:\KamataEngine\Adapter\Novice.cpp">
       <Filter>KamataEngine\Adapter</Filter>
     </ClCompile>
-    <ClCompile Include="Function.cpp">
-      <Filter>KamataEngine</Filter>
-    </ClCompile>
-    <ClCompile Include="MT40101.cpp">
-      <Filter>KamataEngine</Filter>
+    <ClCompile Include="MT4_0103.cpp">
+      <Filter>MT4_01-03</Filter>
     </ClCompile>
     <ClCompile Include="MT40102.cpp">
-      <Filter>KamataEngine</Filter>
+      <Filter>MT4_01-02</Filter>
     </ClCompile>
+    <ClCompile Include="MT40101.cpp">
+      <Filter>MT4_01-01</Filter>
+    </ClCompile>
+    <ClCompile Include="Function.cpp">
+      <Filter>Function</Filter>
+    </ClCompile>
+    <ClCompile Include="MT4_0104.cpp">
+      <Filter>MT4_01-04</Filter>
+    </ClCompile>
+    <ClCompile Include="Quaternion.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="C:\KamataEngine\DirectXGame\audio\Audio.h">
@@ -112,9 +134,21 @@
     <ClInclude Include="C:\KamataEngine\DirectXGame\2d\ImGuiManager.h">
       <Filter>KamataEngine\Include</Filter>
     </ClInclude>
-    <ClInclude Include="Function.h" />
-    <ClInclude Include="Matrix4x4.h" />
-    <ClInclude Include="MT40101.h" />
-    <ClInclude Include="MT40102.h" />
+    <ClInclude Include="MT4_0103.h">
+      <Filter>MT4_01-03</Filter>
+    </ClInclude>
+    <ClInclude Include="MT40102.h">
+      <Filter>MT4_01-02</Filter>
+    </ClInclude>
+    <ClInclude Include="MT40101.h">
+      <Filter>MT4_01-01</Filter>
+    </ClInclude>
+    <ClInclude Include="Function.h">
+      <Filter>Function</Filter>
+    </ClInclude>
+    <ClInclude Include="MT4_0104.h">
+      <Filter>MT4_01-04</Filter>
+    </ClInclude>
+    <ClInclude Include="Quaternion.h" />
   </ItemGroup>
 </Project>

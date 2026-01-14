@@ -176,25 +176,14 @@ Matrix4x4 MakeAffineMatrix(Vector3 scale, Vector3 rotate, Vector3 translate) {
 	return result;
 }
 
-Vector3 TransformVM(const Vector3& vector, const Matrix4x4& matrix4x4) {
+Vector3 TransformVM(const Vector3& v, const Matrix4x4& m) {
 	Vector3 result;
-	result.x = vector.x * matrix4x4.m[0][0] + vector.y * matrix4x4.m[1][0] + vector.z * matrix4x4.m[2][0] + matrix4x4.m[3][0];
-	result.y = vector.x * matrix4x4.m[0][1] + vector.y * matrix4x4.m[1][1] + vector.z * matrix4x4.m[2][1] + matrix4x4.m[3][1];
-	result.z = vector.x * matrix4x4.m[0][2] + vector.y * matrix4x4.m[1][2] + vector.z * matrix4x4.m[2][2] + matrix4x4.m[3][2];
-	float w = vector.x * matrix4x4.m[0][3] + vector.y * matrix4x4.m[1][3] + vector.z * matrix4x4.m[2][3] + matrix4x4.m[3][3];
-
-	// wが0なら変換できない（カメラの視野外など）
-	if (w != 0.0f) {
-		result.x /= w;
-		result.y /= w;
-		result.z /= w;
-	} else {
-		// 代替処理（例：そのまま返す・0で埋める・巨大な数を入れるなど）
-		result = {0.0f, 0.0f, 0.0f}; // 安全に落とす場合
-	}
-
+	result.x = m.m[0][0] * v.x + m.m[0][1] * v.y + m.m[0][2] * v.z + m.m[0][3];
+	result.y = m.m[1][0] * v.x + m.m[1][1] * v.y + m.m[1][2] * v.z + m.m[1][3];
+	result.z = m.m[2][0] * v.x + m.m[2][1] * v.y + m.m[2][2] * v.z + m.m[2][3];
 	return result;
 }
+
 Matrix4x4 Inverse(const Matrix4x4& m) {
 	Matrix4x4 i;
 

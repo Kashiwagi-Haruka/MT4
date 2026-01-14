@@ -1,10 +1,11 @@
 #pragma once
-#include "Matrix4x4.h"
-#include <math\Vector3.h>
-#include <cstdint>
 
+#include <cstdint>
+#include "KamataEngine.h"
 
 using namespace KamataEngine;
+using KamataEngine::Vector3;
+using KamataEngine::Matrix4x4;
 
 namespace Function {
 	

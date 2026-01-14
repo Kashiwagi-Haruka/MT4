@@ -1,5 +1,9 @@
 #pragma once
-#include "Matrix4x4.h"
+#include "KamataEngine.h"
+
+using namespace KamataEngine;
+using KamataEngine::Vector3;
+using KamataEngine::Matrix4x4;
 class MT40101 {
 
 	Matrix4x4 result;
