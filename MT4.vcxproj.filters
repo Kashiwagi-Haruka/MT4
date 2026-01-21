@@ -29,6 +29,12 @@
     <Filter Include="MT4_01-04">
       <UniqueIdentifier>{687ce4c3-36e8-4e90-8089-5212c7faa465}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Quaternion">
+      <UniqueIdentifier>{cf259de6-4178-485f-9442-ce02b81ecc4c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MT4_0105">
+      <UniqueIdentifier>{c8339cbe-8385-44c2-888e-f1cd04267a65}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
@@ -50,7 +56,12 @@
     <ClCompile Include="MT4_0104.cpp">
       <Filter>MT4_01-04</Filter>
     </ClCompile>
-    <ClCompile Include="Quaternion.cpp" />
+    <ClCompile Include="Quaternion.cpp">
+      <Filter>Quaternion</Filter>
+    </ClCompile>
+    <ClCompile Include="MT40105.cpp">
+      <Filter>MT4_0105</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="C:\KamataEngine\DirectXGame\audio\Audio.h">
@@ -149,6 +160,11 @@
     <ClInclude Include="MT4_0104.h">
       <Filter>MT4_01-04</Filter>
     </ClInclude>
-    <ClInclude Include="Quaternion.h" />
+    <ClInclude Include="Quaternion.h">
+      <Filter>Quaternion</Filter>
+    </ClInclude>
+    <ClInclude Include="MT40105.h">
+      <Filter>MT4_0105</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

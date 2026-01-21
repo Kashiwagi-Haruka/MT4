@@ -164,6 +164,7 @@ xcopy C:\KamataEngine\DirectXGame\Resources "$(OutDirFullPath)NoviceResources" /
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MT40101.cpp" />
     <ClCompile Include="MT40102.cpp" />
+    <ClCompile Include="MT40105.cpp" />
     <ClCompile Include="MT4_0103.cpp" />
     <ClCompile Include="MT4_0104.cpp" />
     <ClCompile Include="Quaternion.cpp" />
@@ -199,6 +200,7 @@ xcopy C:\KamataEngine\DirectXGame\Resources "$(OutDirFullPath)NoviceResources" /
     <ClInclude Include="Function.h" />
     <ClInclude Include="MT40101.h" />
     <ClInclude Include="MT40102.h" />
+    <ClInclude Include="MT40105.h" />
     <ClInclude Include="MT4_0103.h" />
     <ClInclude Include="MT4_0104.h" />
     <ClInclude Include="Quaternion.h" />
