@@ -1,6 +1,7 @@
 #include "Quaternion.h"
-#include <cmath>
+#include "Function.h"
 #include <algorithm>
+#include <cmath>
 
 namespace QuaternionFunction {
 
@@ -24,16 +25,16 @@ float Norm(const Quaternion& q) {
 }
 Quaternion IdentityQuaternion() { return {0.0f, 0.0f, 0.0f, 1.0f}; }
 Quaternion Conjugate(const Quaternion& q) { return {-q.x, -q.y, -q.z, q.w}; }
-Quaternion MakeRotateAxisAngleQuaternion(const struct Vector3& axis, float angle) { Quaternion result{};
+Quaternion MakeRotateAxisAngleQuaternion(const struct Vector3& axis, float angle) {
+	Quaternion result{};
+	Vector3 normalizedAxis = Function::Normalize(axis);
 	float halfAngle = angle / 2.0f;
 	float sinHalfAngle = std::sin(halfAngle);
-	result.x = axis.x * sinHalfAngle;
-	result.y = axis.y * sinHalfAngle;
-	result.z = axis.z * sinHalfAngle;
+	result.x = normalizedAxis.x * sinHalfAngle;
+	result.y = normalizedAxis.y * sinHalfAngle;
+	result.z = normalizedAxis.z * sinHalfAngle;
 	result.w = std::cos(halfAngle);
 	return result;
-
-
 }
 Vector3 RotateVector(const Quaternion& q, const Vector3& v) {
 	// q * v * q^-1 で回転
@@ -87,19 +88,13 @@ Quaternion Slerp(const Quaternion& q1, const Quaternion& q2, float t) {
 		q2Copy.z = -q2Norm.z;
 		q2Copy.w = -q2Norm.w;
 	}
-	dot = std::clamp(dot, -1.0f, 1.0f);
-	const float threshold = 0.9995f;
-	if (dot > threshold) {
-		// クォータニオンが非常に近い場合は線形補間を使用
-		Quaternion result{q1Norm.x + t * (q2Copy.x - q1Norm.x), q1Norm.y + t * (q2Copy.y - q1Norm.y), q1Norm.z + t * (q2Copy.z - q1Norm.z), q1Norm.w + t * (q2Copy.w - q1Norm.w)};
-		return Normalize(result);
-	}
-	// θを計算
+	q2Copy = Normalize(q2Copy);
 	float theta = std::acos(dot);
 	float sinTheta = std::sin(theta);
 	float weight1 = std::sin((1.0f - t) * theta) / sinTheta;
 	float weight2 = std::sin(t * theta) / sinTheta;
 	Quaternion result{q1Norm.x * weight1 + q2Copy.x * weight2, q1Norm.y * weight1 + q2Copy.y * weight2, q1Norm.z * weight1 + q2Copy.z * weight2, q1Norm.w * weight1 + q2Copy.w * weight2};
-	return Normalize(result);
+	/*result = Normalize(result);*/
+	return result;
 }
 } // namespace QuaternionFunction
