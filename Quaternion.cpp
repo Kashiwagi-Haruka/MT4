@@ -1,6 +1,6 @@
 #include "Quaternion.h"
 #include <cmath>
-
+#include <algorithm>
 
 namespace QuaternionFunction {
 
@@ -74,43 +74,32 @@ Matrix4x4 MakeRotateMatrix(const Quaternion& q){ Matrix4x4 result{};
 	return result;
 }
 Quaternion Slerp(const Quaternion& q1, const Quaternion& q2, float t) {
+	Quaternion q1Norm = Normalize(q1);
+	Quaternion q2Norm = Normalize(q2);
 	// 内積を計算
-	float dot = q1.x * q2.x + q1.y * q2.y + q1.z * q2.z + q1.w * q2.w;
+	float dot = q1Norm.x * q2Norm.x + q1Norm.y * q2Norm.y + q1Norm.z * q2Norm.z + q1Norm.w * q2Norm.w;
 	// もし内積が負なら、q2を反転させて最短経路を取る
-	Quaternion q2Copy = q2;
+	Quaternion q2Copy = q2Norm;
 	if (dot < 0.0f) {
 		dot = -dot;
-		q2Copy.x = -q2.x;
-		q2Copy.y = -q2.y;
-		q2Copy.z = -q2.z;
-		q2Copy.w = -q2.w;
+		q2Copy.x = -q2Norm.x;
+		q2Copy.y = -q2Norm.y;
+		q2Copy.z = -q2Norm.z;
+		q2Copy.w = -q2Norm.w;
 	}
+	dot = std::clamp(dot, -1.0f, 1.0f);
 	const float threshold = 0.9995f;
 	if (dot > threshold) {
 		// クォータニオンが非常に近い場合は線形補間を使用
-		Quaternion result{
-			q1.x + t * (q2Copy.x - q1.x),
-			q1.y + t * (q2Copy.y - q1.y),
-			q1.z + t * (q2Copy.z - q1.z),
-			q1.w + t * (q2Copy.w - q1.w)};
+		Quaternion result{q1Norm.x + t * (q2Copy.x - q1Norm.x), q1Norm.y + t * (q2Copy.y - q1Norm.y), q1Norm.z + t * (q2Copy.z - q1Norm.z), q1Norm.w + t * (q2Copy.w - q1Norm.w)};
 		return Normalize(result);
 	}
 	// θを計算
-	float theta_0 = std::acos(dot);
-	float theta = theta_0 * t;
-	// q2を正規化したq1に対して直交する成分を計算
-	Quaternion qPerp{
-		q2Copy.x - dot * q1.x,
-		q2Copy.y - dot * q1.y,
-		q2Copy.z - dot * q1.z,
-		q2Copy.w - dot * q1.w};
-	qPerp = Normalize(qPerp);
-	// 最終的なクォータニオンを計算
-	Quaternion result{
-		q1.x * std::cos(theta) + qPerp.x * std::sin(theta),
-		q1.y * std::cos(theta) + qPerp.y * std::sin(theta),
-		q1.z * std::cos(theta) + qPerp.z * std::sin(theta),
-		q1.w * std::cos(theta) + qPerp.w * std::sin(theta)};
-	return result;
-	}
+	float theta = std::acos(dot);
+	float sinTheta = std::sin(theta);
+	float weight1 = std::sin((1.0f - t) * theta) / sinTheta;
+	float weight2 = std::sin(t * theta) / sinTheta;
+	Quaternion result{q1Norm.x * weight1 + q2Copy.x * weight2, q1Norm.y * weight1 + q2Copy.y * weight2, q1Norm.z * weight1 + q2Copy.z * weight2, q1Norm.w * weight1 + q2Copy.w * weight2};
+	return Normalize(result);
+}
 } // namespace QuaternionFunction
