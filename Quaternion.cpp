@@ -11,8 +11,11 @@ Quaternion Inverse(const Quaternion& q) {
 	return {conjugate.x / normSq, conjugate.y / normSq, conjugate.z / normSq, conjugate.w / normSq};
 }
 Quaternion Normalize(const Quaternion& q) {
-	float norm = std::sqrt(q.x * q.x + q.y * q.y + q.z * q.z + q.w * q.w);
-	return {q.x / norm, q.y / norm, q.z / norm, q.w / norm};
+	double norm = std::sqrt(static_cast<double>(q.x) * q.x + static_cast<double>(q.y) * q.y + static_cast<double>(q.z) * q.z + static_cast<double>(q.w) * q.w);
+	if (norm <= 1e-12) {
+		return {0.0f, 0.0f, 0.0f, 1.0f};
+	}
+	return {static_cast<float>(q.x / norm), static_cast<float>(q.y / norm), static_cast<float>(q.z / norm), static_cast<float>(q.w / norm)};
 }
 Quaternion Multiply(const Quaternion& q1, const Quaternion& q2) {
 	return {
@@ -78,10 +81,11 @@ Quaternion Slerp(const Quaternion& q1, const Quaternion& q2, float t) {
 	Quaternion q1Norm = Normalize(q1);
 	Quaternion q2Norm = Normalize(q2);
 	// 内積を計算
-	float dot = q1Norm.x * q2Norm.x + q1Norm.y * q2Norm.y + q1Norm.z * q2Norm.z + q1Norm.w * q2Norm.w;
+	double dot = static_cast<double>(q1Norm.x) * q2Norm.x + static_cast<double>(q1Norm.y) * q2Norm.y + static_cast<double>(q1Norm.z) * q2Norm.z + static_cast<double>(q1Norm.w) * q2Norm.w;
+	dot = std::clamp(dot, -1.0, 1.0);
 	// もし内積が負なら、q2を反転させて最短経路を取る
 	Quaternion q2Copy = q2Norm;
-	if (dot < 0.0f) {
+	if (dot <= 0.0) {
 		dot = -dot;
 		q2Copy.x = -q2Norm.x;
 		q2Copy.y = -q2Norm.y;
@@ -89,12 +93,19 @@ Quaternion Slerp(const Quaternion& q1, const Quaternion& q2, float t) {
 		q2Copy.w = -q2Norm.w;
 	}
 	q2Copy = Normalize(q2Copy);
-	float theta = std::acos(dot);
-	float sinTheta = std::sin(theta);
-	float weight1 = std::sin((1.0f - t) * theta) / sinTheta;
-	float weight2 = std::sin(t * theta) / sinTheta;
-	Quaternion result{q1Norm.x * weight1 + q2Copy.x * weight2, q1Norm.y * weight1 + q2Copy.y * weight2, q1Norm.z * weight1 + q2Copy.z * weight2, q1Norm.w * weight1 + q2Copy.w * weight2};
-	/*result = Normalize(result);*/
-	return result;
+	if (dot > 0.9995) {
+		Quaternion result{q1Norm.x + (q2Copy.x - q1Norm.x) * t, q1Norm.y + (q2Copy.y - q1Norm.y) * t, q1Norm.z + (q2Copy.z - q1Norm.z) * t, q1Norm.w + (q2Copy.w - q1Norm.w) * t};
+		return Normalize(result);
+	}
+	double theta0 = std::acos(dot);
+	double theta = theta0 * t;
+	double sinTheta0 = std::sin(theta0);
+	double sinTheta = std::sin(theta);
+	double s0 = std::cos(theta) - dot * sinTheta / sinTheta0;
+	double s1 = sinTheta / sinTheta0;
+	Quaternion result{
+	    static_cast<float>(q1Norm.x * s0 + q2Copy.x * s1), static_cast<float>(q1Norm.y * s0 + q2Copy.y * s1), static_cast<float>(q1Norm.z * s0 + q2Copy.z * s1),
+	    static_cast<float>(q1Norm.w * s0 + q2Copy.w * s1)};
+	return Normalize(result);
 }
 } // namespace QuaternionFunction
